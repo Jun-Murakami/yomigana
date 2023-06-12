@@ -13,11 +13,14 @@ function MainContainer() {
   const appState = useContext(AppContext);
 
   const borderStyles = mergeStyles({
+    background: '#fafafa',
+    width: '100%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     selectors: {
       h1: {
-        color: 'darkblue',
+        color: '#6958e1',
       },
     },
   });
