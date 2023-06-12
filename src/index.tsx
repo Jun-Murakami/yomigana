@@ -8,6 +8,13 @@ import reportWebVitals from './reportWebVitals';
 
 initializeIcons();
 const myTheme = createTheme({
+  defaultFontStyle: { fontFamily: 'Noto Sans JP, sans-serif', fontWeight: 'regular' },
+  fonts: {
+    medium: {
+      fontFamily: 'Noto Sans JP, sans-serif',
+      fontWeight: 'regular',
+      fontSize: '11pt',
+    },},
   palette: {
     themePrimary: '#6958e1',
     themeLighterAlt: '#f8f8fe',
