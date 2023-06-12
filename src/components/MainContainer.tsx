@@ -36,7 +36,7 @@ function MainContainer() {
       <Stack tokens={themedMediumStackTokens} style={{ display: 'flex', justifyContent: 'center', width: '90%' }}>
         <h1 style={{ display: 'block', textAlign: 'center' }}>よみがなコンバーター</h1>
         <Stack wrap horizontal horizontalAlign="center" tokens={themedMediumStackTokens}>
-          <Stack tokens={themedMediumStackTokens} style={{ width: '600px' }}>
+          <Stack tokens={themedMediumStackTokens} style={{ width: '500px' }}>
             <Text>■ 歌詞テキスト</Text>
             <TextField
               multiline
@@ -50,7 +50,7 @@ function MainContainer() {
               <PasteButton/>
             </Stack>
           </Stack>
-          <Stack tokens={themedMediumStackTokens} style={{ width: '600px' }}>
+          <Stack tokens={themedMediumStackTokens} style={{ width: '500px' }}>
             <Text>■ 変換後テキスト</Text>
             <TextField
               multiline
