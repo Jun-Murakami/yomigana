@@ -7,7 +7,7 @@ import { Dialog, DialogFooter } from '@fluentui/react';
 interface DialogProps {
   message: string;
   title: string;
-  isTwoButtons?: boolean; // 追加
+  isTwoButtons?: boolean;
 }
 
 export default function ModalDialog({ message, title }: DialogProps) {
