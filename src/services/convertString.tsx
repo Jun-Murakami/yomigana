@@ -65,8 +65,6 @@ export async function convertString(
       }
     }
 
-    console.log('convertList:' + convertList);
-
     if (convertList.length !== convertStock.length) {
       const overwrite = await dialog('[' + strA + ']と[' + strB + ']の合計数が前回の変換時と異なります。再変換しますか？', 'Confirmation', true);
 
@@ -145,7 +143,6 @@ export async function convertString(
     }
   }
 
-  console.log('outputList: ' + outputList);
   outputDataStr = outputList.join("");
   outputDataStr = outputDataStr.replace(/\t/g, '\n');
 

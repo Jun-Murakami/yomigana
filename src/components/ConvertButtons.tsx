@@ -20,9 +20,7 @@ export function HaWaButton(props: IButtonProps) {
       let convertOutput: ConvertOutput
       if (appState) {
         convertOutput = await convertString(convertInput, appState.dialog);
-        // その他の処理...
       } else {
-        // appStateがnullまたはundefinedの場合の処理...
         throw new Error('appStateがnullまたはundefinedです');
       }
       if (convertOutput.text === '') {
