@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { IButtonProps } from '@fluentui/react';
-import { AppContext } from '../context/AppContext';
+import { useAppStore } from '../store/appStore';
+import { useDialogStore } from '../store/dialogStore';
 import { RoundButton } from './RoundButtons';
 
 export function ClearButton(props: IButtonProps) {
-  const appState = useContext(AppContext);
-
+  const setAppState = useAppStore((state)=>state.setAppState);
   const clearText = () => {
-    appState?.setAppState('lyricTextContent', '');
+    setAppState('lyricTextContent', '');
   };
 
   return (
@@ -16,9 +16,9 @@ export function ClearButton(props: IButtonProps) {
 }
 
 export function CopyButton(props: IButtonProps) {
-  const appState = useContext(AppContext);
+  const convertedTextContent = useAppStore((state)=>state.convertedTextContent);
   const copyText = () => {
-    navigator.clipboard.writeText(appState?.convertedTextContent || '');
+    navigator.clipboard.writeText(convertedTextContent);
   };
 
   return (
@@ -27,10 +27,10 @@ export function CopyButton(props: IButtonProps) {
 }
 
 export function PasteButton(props: IButtonProps) {
-  const appState = useContext(AppContext);
+  const setAppState = useAppStore((state)=>state.setAppState);
   const pasteText = () => {
     navigator.clipboard.readText().then(clipText => {
-      appState?.setAppState('lyricTextContent', clipText);
+      setAppState('lyricTextContent', clipText);
     });
   }
 
@@ -40,13 +40,15 @@ export function PasteButton(props: IButtonProps) {
 }
 
 export function RemoveLineBreaksButton(props: IButtonProps) {
-  const appState = useContext(AppContext);
+  const showDialog = useDialogStore((state)=>state.showDialog);
+  const convertedTextContent = useAppStore((state)=>state.convertedTextContent);
+  const setAppState = useAppStore((state)=>state.setAppState);
 
   const removeLineBreaks = async () => {
-    if (appState?.convertedTextContent === '') return;
-    const result = await appState?.dialog('変換後テキストの改行を削除して繋げます。（空白行はそのまま残ります。）\n\nこの操作は元に戻せません。実行しますか？', 'Confirm', true);
+    if (convertedTextContent === '') return;
+    const result = await showDialog('変換後テキストの改行を削除して繋げます。（空白行はそのまま残ります。）\n\nこの操作は元に戻せません。実行しますか？', 'Confirm', true);
     if (result) {
-      const normalizedText = appState?.convertedTextContent.replace(/\r\n|\r|\n/g, '\n');
+      const normalizedText = convertedTextContent.replace(/\r\n|\r|\n/g, '\n');
       if (normalizedText === undefined) return;
 
       const convertedData = normalizedText.split('\n');
@@ -66,7 +68,7 @@ export function RemoveLineBreaksButton(props: IButtonProps) {
       }
 
       outputData = outputData.replace(/\t/g, '\n\n');
-      appState?.setAppState('convertedTextContent', outputData);
+      setAppState('convertedTextContent', outputData);
     }
   };
 

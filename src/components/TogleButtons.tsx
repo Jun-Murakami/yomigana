@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { AppContext, AppState } from '../context/AppContext';
+import React  from 'react';
+import { useAppStore,AppState } from '../store/appStore';
 import { IToggleStyles } from '@fluentui/react/lib/Toggle';
 import { Toggle } from '@fluentui/react/lib/Toggle';
 
@@ -17,17 +17,11 @@ interface OwnProps {
 type Props = OwnProps & React.ComponentProps<typeof Toggle>;
 
 export function ToggleComponent({ label, stateKey, ...restProps }: Props) {
-  const appState = useContext(AppContext);
-
-  if (!appState) {
-    throw new Error('AppContext not found');
-  }
-
-  const { setAppState } = appState;
-  const isChecked = appState[stateKey];
+  const setZustandState = useAppStore((state)=>state.setAppState);
+  const isChecked = useAppStore((state)=>state[stateKey]);
 
   const handleChange = () => {
-    setAppState(stateKey, !isChecked);
+    setZustandState(stateKey, !isChecked);
   };
 
   return (

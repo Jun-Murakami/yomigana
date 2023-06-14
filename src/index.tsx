@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider, createTheme } from '@fluentui/react/lib/Theme';
+import { ThemeProvider, PartialTheme } from '@fluentui/react/lib/Theme';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 initializeIcons();
-const myTheme = createTheme({
+const myTheme: PartialTheme = {
   defaultFontStyle: { fontFamily: 'Noto Sans JP, sans-serif', fontWeight: 'regular' },
   fonts: {
     medium: {
@@ -39,7 +39,7 @@ const myTheme = createTheme({
     neutralDark: '#201f1e',
     black: '#000000',
     white: '#ffffff',
-  }});
+  }};
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

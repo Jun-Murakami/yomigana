@@ -1,84 +1,88 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { IButtonProps } from '@fluentui/react';
-import { AppContext } from '../context/AppContext';
+import { useAppStore } from '../store/appStore';
+import { useDialogStore } from '../store/dialogStore';
 import { RoundButton } from './RoundButtons';
 import { convertString,ConvertInput,ConvertOutput } from '../services/convertString';
 
 export function HaWaButton(props: IButtonProps) {
-  const appState = useContext(AppContext);
+  const showDialog = useDialogStore((state)=>state.showDialog);
+  const setAppStore = useAppStore((state)=>state.setAppState);
+  const convertedTextContent = useAppStore((state)=>state.convertedTextContent);
+  const convertSwitch = useAppStore((state)=>state.convertSwitch);
+  const convertStockHaWa = useAppStore((state)=>state.convertStockHaWa);
+  const convertStockHeE = useAppStore((state)=>state.convertStockHeE);
 
   const haWaConvert = async () => {
     const convertInput: ConvertInput = {
-      text: appState?.convertedTextContent || '',
-      convertSwitch: appState?.convertSwitch || {},
-      convertStockHaWa: appState?.convertStockHaWa || [],
-      convertStockHeE: appState?.convertStockHeE || [],
+      text: convertedTextContent,
+      convertSwitch: convertSwitch,
+      convertStockHaWa: convertStockHaWa,
+      convertStockHeE: convertStockHeE,
       strA: 'は',
       strB: 'わ',
     };
     try {
-      let convertOutput: ConvertOutput
-      if (appState) {
-        convertOutput = await convertString(convertInput, appState.dialog);
-      } else {
-        throw new Error('appStateがnullまたはundefinedです');
-      }
+      const convertOutput: ConvertOutput = await convertString(convertInput, showDialog);
       if (convertOutput.text === '') {
         return;
       }
       
-      appState?.setAppState('convertedTextContent', convertOutput.text);
-      appState?.setAppState('convertSwitch', convertOutput.convertSwitch);
-      appState?.setAppState('convertStockHaWa', convertOutput.convertStockHaWa);
-      appState?.setAppState('haWaButtonText', convertOutput.buttonTextHaWa);
+      setAppStore('convertedTextContent',convertOutput.text);
+      setAppStore('convertSwitch',convertOutput.convertSwitch);
+      setAppStore('convertStockHaWa',convertOutput.convertStockHaWa);
+      setAppStore('haWaButtonText',convertOutput.buttonTextHaWa);
     } catch (ex) {
+      if (ex instanceof Error) {
+        await showDialog(ex.message, "Error");
+      } else {
+        await showDialog("An unknown error occurred.", "Error");
+      }
     }
   };
 
   return (
-    <RoundButton text={appState?.haWaButtonText} onClick={haWaConvert} {...props}/>
+    <RoundButton text={useAppStore((state)=>state.haWaButtonText)} onClick={haWaConvert} {...props}/>
   );
 }
 
 export function HeEButton(props: IButtonProps) {
-  const appState = useContext(AppContext);
+  const showDialog = useDialogStore((state)=>state.showDialog);
+  const setAppStore = useAppStore((state)=>state.setAppState);
+  const convertedTextContent = useAppStore((state)=>state.convertedTextContent);
+  const convertSwitch = useAppStore((state)=>state.convertSwitch);
+  const convertStockHaWa = useAppStore((state)=>state.convertStockHaWa);
+  const convertStockHeE = useAppStore((state)=>state.convertStockHeE);
 
   const heEConvert = async () => {
     const convertInput: ConvertInput = {
-      text: appState?.convertedTextContent || '',
-      convertSwitch: appState?.convertSwitch || {},
-      convertStockHaWa: appState?.convertStockHaWa || [],
-      convertStockHeE: appState?.convertStockHeE || [],
+      text: convertedTextContent,
+      convertSwitch: convertSwitch,
+      convertStockHaWa: convertStockHaWa,
+      convertStockHeE: convertStockHeE,
       strA: 'へ',
       strB: 'え',
     };
     try {
-      let convertOutput: ConvertOutput
-      if (appState) {
-        convertOutput = await convertString(convertInput, appState.dialog);
-        // その他の処理...
-      } else {
-        // appStateがnullまたはundefinedの場合の処理...
-        throw new Error('appStateがnullまたはundefinedです');
-      }
+      const convertOutput: ConvertOutput = await convertString(convertInput, showDialog);
       if (convertOutput.text === '') {
         return;
       }
       
-      appState?.setAppState('convertedTextContent', convertOutput.text);
-      appState?.setAppState('convertSwitch', convertOutput.convertSwitch);
-      appState?.setAppState('convertStockHeE', convertOutput.convertStockHeE);
-      appState?.setAppState('heEButtonText', convertOutput.buttonTextHeE);
+      setAppStore('convertedTextContent',convertOutput.text);
+      setAppStore('convertSwitch',convertOutput.convertSwitch);
+      setAppStore('convertStockHeE',convertOutput.convertStockHeE);
+      setAppStore('heEButtonText',convertOutput.buttonTextHeE);
     } catch (ex) {
       if (ex instanceof Error) {
-        await appState?.dialog(ex.message, "Error");
+        await showDialog(ex.message, "Error");
       } else {
-        await appState?.dialog("An unknown error occurred.", "Error");
+        await showDialog("An unknown error occurred.", "Error");
       }
     }
   };
 
   return (
-    <RoundButton text={appState?.heEButtonText} onClick={heEConvert} {...props}/>
+    <RoundButton text={useAppStore((state)=>state.heEButtonText)} onClick={heEConvert} {...props}/>
   );
 }

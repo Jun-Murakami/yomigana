@@ -1,34 +1,34 @@
-import React,{useContext} from 'react';
-import { AppContext } from '../context/AppContext';
+import React from 'react';
+import { useDialogStore } from '../store/dialogStore';
 import { PrimaryRoundButton, RoundButton } from './RoundButtons';
 import { Dialog, DialogFooter } from '@fluentui/react';
 
-
-interface DialogProps {
-  message: string;
-  title: string;
-  isTwoButtons?: boolean;
-}
-
-export default function ModalDialog({ message, title }: DialogProps) {
-  const appState = useContext(AppContext);
+export default function ModalDialog() {
+  const hideDialog = useDialogStore((state) => state.hideDialog);
+  const resolveDialog = useDialogStore((state) => state.resolveDialog);
   return (
     <Dialog
-    hidden={!appState?.isDialogVisible}
-    onDismiss={() => appState?.handleDialogHide.current && appState?.handleDialogHide.current(null)}
+      hidden={!useDialogStore((state) => state.isDialogVisible)}
+      onDismiss={hideDialog}
       dialogContentProps={{
-        title: title,
-        subText: message,
+        title: useDialogStore((state) => state.dialogTitle),
+        subText: useDialogStore((state) => state.dialogMessage),
       }}
       modalProps={{
         isBlocking: true,
         styles: { main: { maxWidth: 700, borderRadius: 10} },
       }}
     >
-    <DialogFooter>
-      <PrimaryRoundButton onClick={() => appState?.handleDialogHide.current && appState?.handleDialogHide.current(true)} text="OK" />
-      {appState?.isDialogTwoButtons && <RoundButton onClick={() => appState?.handleDialogHide.current && appState?.handleDialogHide.current(false)} text="キャンセル" />}
-    </DialogFooter>
-  </Dialog>
+      <DialogFooter>
+        <PrimaryRoundButton onClick={() => {
+          resolveDialog?.(true);
+          hideDialog();
+        }} text="OK" />
+        {useDialogStore((state) => state.isDialogTwoButtons) && <RoundButton onClick={() => {
+          resolveDialog?.(false);
+          hideDialog();
+        }} text="キャンセル" />}
+      </DialogFooter>
+    </Dialog>
   );
 }

@@ -1,9 +1,12 @@
 import React from 'react';
-import { DefaultButton, PrimaryButton, IButtonStyles, IButtonProps } from '@fluentui/react';
+import { DefaultButton, PrimaryButton, IButtonStyles, IButtonProps, getTheme } from '@fluentui/react';
 
+const theme = getTheme();
 const customButtonStyles: IButtonStyles = {
   root: {
     borderRadius: '6px',
+    borderColor: theme.palette.neutralQuaternary,
+    boxShadow: theme.effects.elevation4,
     selectors: {
       ':hover': {
         borderRadius: '6px',

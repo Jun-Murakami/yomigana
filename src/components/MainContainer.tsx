@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
+import React from 'react';
+import { useAppStore } from '../store/appStore';
 import { mergeStyles } from '@fluentui/react';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Text } from '@fluentui/react/lib/Text';
@@ -10,7 +10,7 @@ import { HaWaButton, HeEButton } from './ConvertButtons';
 import { SubmitButton } from './SubmitButton';
 
 function MainContainer() {
-  const appState = useContext(AppContext);
+  const setAppState = useAppStore((state) => state.setAppState);
 
   const borderStyles = mergeStyles({
     background: '#fafafa',
@@ -36,13 +36,13 @@ function MainContainer() {
       <Stack tokens={themedMediumStackTokens} style={{ display: 'flex', justifyContent: 'center', width: '90%' }}>
         <h1 style={{ display: 'block', textAlign: 'center' }}>よみがなコンバーター</h1>
         <Stack wrap horizontal horizontalAlign="center" tokens={themedMediumStackTokens}>
-          <Stack tokens={themedMediumStackTokens} style={{ width: '550px' }}>
+          <Stack tokens={themedMediumStackTokens} style={{ width: '50%',maxWidth: '580px' }}>
             <Text>■ 歌詞テキスト</Text>
             <TextField
               multiline
               rows={25}
-              value={appState ? appState.lyricTextContent : undefined}
-              onChange={(e, newValue) => appState?.setAppState('lyricTextContent',newValue || '')}
+              value={useAppStore((state)=> state.lyricTextContent)}
+              onChange={(e, newValue) => setAppState('lyricTextContent', newValue || '')}
             />
             <Stack wrap horizontal horizontalAlign="center" tokens={themedMediumStackTokens}>
               <SubmitButton/>
@@ -50,13 +50,13 @@ function MainContainer() {
               <PasteButton/>
             </Stack>
           </Stack>
-          <Stack tokens={themedMediumStackTokens} style={{ width: '550px' }}>
+          <Stack tokens={themedMediumStackTokens} style={{ width: '50%', maxWidth: '580px' }}>
             <Text>■ 変換後テキスト</Text>
             <TextField
               multiline
               rows={25}
-              value={appState ? appState.convertedTextContent : undefined}
-              onChange={(e, newValue) => appState?.setAppState('convertedTextContent',newValue || '')}
+              value={useAppStore((state)=> state.convertedTextContent)}
+              onChange={(e, newValue) => setAppState('convertedTextContent',newValue || '')}
             />
             <Stack wrap horizontal horizontalAlign="center" tokens={themedMediumStackTokens}>
               <HaWaButton/>
